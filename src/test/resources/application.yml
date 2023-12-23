@@ -1,0 +1,25 @@
+# Database configuration
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false;DATABASE_TO_UPPER=FALSE;DATABASE_TO_LOWER=TRUE;
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+    initialization-mode: always
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+# Hunter API configuration
+hunter-api:
+  url: https://test.hunter.com
+  api-key: test-hunter-key
+
+
+# Clearbit API configuration
+clearbit-api:
+  url: https://test.clearbit.com
+  api-key: test-clearbit-key

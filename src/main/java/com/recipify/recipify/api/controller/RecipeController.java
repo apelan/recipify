@@ -33,6 +33,7 @@ public class RecipeController {
     private final RatingService rateRecipe;
 
     @PostMapping
+    @Operation(summary = "Create new recipe")
     public void createRecipe(@Valid @RequestBody CreateRecipeDto createRecipeDto) {
         recipeService.createRecipe(createRecipeDto);
     }

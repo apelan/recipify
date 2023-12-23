@@ -37,3 +37,6 @@ INSERT INTO recipe_ingredients("recipe_id", "ingredient_id") VALUES
 (2, 4),
 (2, 5),
 (2, 6);
+
+
+INSERT INTO "recipe_ratings" ("recipe_id", "user_id", "rating", "created") VALUES (1, 1, 5, current_timestamp);
