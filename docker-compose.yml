@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres-database
+    environment:
+      POSTGRES_DB: recipify_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+  service:
+    build:
+      dockerfile: Dockerfile
+    container_name: recipify-app-container
+    depends_on:
+      - db
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

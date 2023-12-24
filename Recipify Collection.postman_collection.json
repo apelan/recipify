@@ -372,6 +372,78 @@
 			]
 		},
 		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get user information",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"// change properties if other user created",
+							"const url = \"http://localhost:8080/api/v1/auth/login?email=user@recipify.com&password=user\"",
+							"",
+							"pm.sendRequest({",
+							"    url: url,",
+							"    method: \"GET\",",
+							"}, function (err, response) {",
+							"    if (err) {",
+							"        console.error(err);",
+							"    } else {",
+							"        const responseBody = response.json();",
+							"        const token = responseBody.token;",
+							"",
+							"        pm.environment.set(\"jwt\", token);",
+							"        console.log(\"Token stored:\", token);",
+							"    }",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
 			"name": "External APIs",
 			"item": [
 				{
