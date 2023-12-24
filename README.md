@@ -27,12 +27,12 @@ In order to run on local machine go to projects root folder, open command prompt
 gradlew build
 ```
 
-When project is build, we will use docker compose to build database and service image and run them. 
+When project is built, we will use docker compose to build database and service images and run them. 
 To achieve this we can use following command:
 ```shell
 docker compose up
 ```
-Application by default is running on port 8080, it will be available at:
+By default, application is running on port 8080. It will be available at:
 http://localhost:8080
 
 
