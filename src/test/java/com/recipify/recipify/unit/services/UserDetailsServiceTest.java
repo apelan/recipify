@@ -1,5 +1,6 @@
 package com.recipify.recipify.unit.services;
 
+import com.recipify.recipify.api.dto.UserInfoDto;
 import com.recipify.recipify.data.entities.User;
 import com.recipify.recipify.data.repositories.UserRepository;
 import com.recipify.recipify.services.UserDetailsService;
@@ -94,6 +95,32 @@ public class UserDetailsServiceTest {
 
         // WHEN THEN
         assertThrows(UsernameNotFoundException.class, () -> service.currentUser());
+
+    }
+
+    @Test
+    public void getUserInfo() {
+        // GIVEN
+        User user = new User();
+        user.setEmail("test@recipify.com");
+        user.setFirstName("lorem");
+        user.setLastName("ipsum");
+        user.setCity("Paris");
+        user.setCountry("France");
+
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(userRepository.findByEmail(authentication.getName())).thenReturn(Optional.of(user));
+
+        // WHEN
+        UserInfoDto result = service.getUserInfo();
+
+        // THEN
+        assertEquals(user.getEmail(), result.email());
+        assertEquals(user.getFirstName(), result.firstName());
+        assertEquals(user.getLastName(), result.lastName());
+        assertEquals(user.getCity(), result.city());
+        assertEquals(user.getCountry(), result.country());
 
     }
 

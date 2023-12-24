@@ -1,6 +1,7 @@
 package com.recipify.recipify.services;
 
 
+import com.recipify.recipify.api.dto.UserInfoDto;
 import com.recipify.recipify.data.repositories.UserRepository;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UserRepository userRepository;
@@ -29,6 +33,7 @@ public class UserDetailsService implements org.springframework.security.core.use
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        log.info("Loading user by email {}", email);
         com.recipify.recipify.data.entities.User user = userRepository
                 .findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist."));
@@ -45,6 +50,24 @@ public class UserDetailsService implements org.springframework.security.core.use
         return userRepository
                 .findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist."));
+    }
+
+    /**
+     * Fetches information about current user.
+     *
+     * @return {@link UserInfoDto}
+     */
+    public UserInfoDto getUserInfo() {
+        com.recipify.recipify.data.entities.User user = currentUser();
+        log.info("Fetching information for current user {}", user.getEmail());
+
+        return new UserInfoDto(
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getCity(),
+                user.getCountry()
+        );
     }
 
 }

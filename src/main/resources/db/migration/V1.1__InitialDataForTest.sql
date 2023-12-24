@@ -1,6 +1,10 @@
-INSERT INTO "users" ("email", "password", "created") VALUES (
+INSERT INTO "users" ("email", "password", "first_name", "last_name", "city", "country", "created") VALUES (
     'user@recipify.com',
     '$2a$12$wZ90JiDNb3c1GelyrE8iTuBCfVJfFu/jkBfFPUu6j9/vxywZhjwwe',
+    'Lorem',
+    'Ipsum',
+    'Paris',
+    'France',
     current_timestamp
 );
 
