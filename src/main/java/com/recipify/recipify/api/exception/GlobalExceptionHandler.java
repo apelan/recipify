@@ -32,20 +32,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 Timestamp.from(Instant.now())
         );
         exception.printStackTrace();
-        log.error("Internal server exception occurred {}", exception.getMessage());
+        log.error("Internal server exception occurred: {}", exception.getMessage());
         return new ResponseEntity<>(customException, HttpStatusCode.valueOf(500));
     }
 
     @ExceptionHandler(ValidationException.class)
-    protected ResponseEntity<CustomException> handleServiceException(ValidationException exception) {
+    protected ResponseEntity<CustomException> handleValidationException(ValidationException exception) {
         CustomException customException = new CustomException(
                 400,
                 Set.of(exception.getMessage()),
                 Timestamp.from(Instant.now())
         );
         exception.printStackTrace();
-        log.error("Validation exception occurred {}", exception.getMessage());
+        log.error("Validation exception occurred: {}", exception.getMessage());
         return new ResponseEntity<>(customException, HttpStatusCode.valueOf(400));
+    }
+
+    @ExceptionHandler(IntegrationException.class)
+    protected ResponseEntity<CustomException> handleIntegrationException(IntegrationException exception) {
+        CustomException customException = new CustomException(
+                exception.getStatus().value(),
+                Set.of(exception.getMessage()),
+                Timestamp.from(Instant.now())
+        );
+        exception.printStackTrace();
+        log.error("Integration exception occurred: {}", exception.getMessage());
+        return new ResponseEntity<>(customException, exception.getStatus());
     }
 
     @Override

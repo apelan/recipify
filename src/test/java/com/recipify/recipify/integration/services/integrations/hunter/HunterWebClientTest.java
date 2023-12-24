@@ -1,5 +1,6 @@
 package com.recipify.recipify.integration.services.integrations.hunter;
 
+import com.recipify.recipify.api.exception.IntegrationException;
 import com.recipify.recipify.services.integrations.hunter.HunterConfiguration;
 import com.recipify.recipify.services.integrations.hunter.HunterWebClient;
 
@@ -17,6 +18,7 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HunterWebClientTest {
@@ -83,6 +85,28 @@ public class HunterWebClientTest {
         // THEN
         assertFalse(result);
 
+    }
+
+    @Test
+    public void verifyEmail_unauthorized() {
+        // GIVEN
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(401)
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE));
+
+        // WHEN THEN
+        assertThrows(IntegrationException.class, () -> hunterWebClient.verifyEmail("test@test.com"));
+    }
+
+    @Test
+    public void verifyEmail_badRequest() {
+        // GIVEN
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(400)
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE));
+
+        // WHEN THEN
+        assertThrows(IntegrationException.class, () -> hunterWebClient.verifyEmail("test@test.com"));
     }
 
     private static HunterWebClient createHunterWebClient(WebClient webClient) throws NoSuchFieldException, IllegalAccessException {

@@ -1,5 +1,6 @@
 package com.recipify.recipify.integration.services.integrations.clearbit;
 
+import com.recipify.recipify.api.exception.IntegrationException;
 import com.recipify.recipify.services.integrations.clearbit.ClearbitConfiguration;
 import com.recipify.recipify.services.integrations.clearbit.ClearbitUser;
 import com.recipify.recipify.services.integrations.clearbit.ClearbitWebClient;
@@ -20,6 +21,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ClearbitWebClientTest {
 
@@ -72,6 +74,28 @@ public class ClearbitWebClientTest {
         assertEquals("Paris", result.city());
         assertEquals("France", result.country());
 
+    }
+
+    @Test
+    public void getUserData_unauthorized() {
+        // GIVEN
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(401)
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE));
+
+        // WHEN THEN
+        assertThrows(IntegrationException.class, () -> clearbitWebClient.getUserData("test@test.com"));
+    }
+
+    @Test
+    public void getUserData_badRequest() {
+        // GIVEN
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(400)
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE));
+
+        // WHEN THEN
+        assertThrows(IntegrationException.class, () -> clearbitWebClient.getUserData("test@test.com"));
     }
 
     @Test

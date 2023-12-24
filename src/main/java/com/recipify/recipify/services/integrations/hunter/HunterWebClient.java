@@ -1,7 +1,9 @@
 package com.recipify.recipify.services.integrations.hunter;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.recipify.recipify.api.exception.IntegrationException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -39,6 +41,17 @@ public class HunterWebClient {
                         .queryParam("api_key", configuration.getApiKey())
                         .build())
                 .retrieve()
+                .onStatus(
+                        httpStatus -> httpStatus.value() == 400,
+                        clientResponse -> {
+                            throw new IntegrationException("Issue during Hunter call", HttpStatus.BAD_REQUEST);
+                        }
+                ).onStatus(
+                        httpStatus -> httpStatus.value() == 401,
+                        clientResponse -> {
+                            throw new IntegrationException("Authorization issue, check Hunter api key", HttpStatus.BAD_REQUEST);
+                        }
+                )
                 .bodyToMono(JsonNode.class)
                 .block();
 
