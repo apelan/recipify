@@ -48,7 +48,7 @@ or [Linux](https://docs.docker.com/desktop/install/linux-install/) installations
 
 
 - <b>Test API</b> <br>
-  We can test API with Swagger by accessing [link](#TODO) or using any rest client. I've provided [Postman Collection](#TODO) in root folder of project.<br> 
+  We can test API with Swagger by accessing [link](#TODO) or using any rest client. I've provided [Postman Collection](https://github.com/apelan/recipify/blob/main/Recipify%20Collection.postman_collection.json) in root folder of project.<br> 
 Postman Collection is configured for local usage, to test against deployed application on Railway you need to change url. <br>
 
 - <b>Use API</b> <br>
