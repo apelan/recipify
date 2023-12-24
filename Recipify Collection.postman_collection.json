@@ -1,0 +1,451 @@
+{
+	"info": {
+		"_postman_id": "a70f3f7c-39d3-438e-a0b3-4a3622bc41f4",
+		"name": "Recipify Collection",
+		"description": "All endpoints require bearer authentication, except ones in Authentication folder.\n\nImportant note:\nRecipes and Ingredients folders have pre-script applied to them which calls /login endpoint in order to obtain JWT. Since it was using for testing purpose email and password may not be matching yours and should be changed.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login endpoint",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/login?email=user@recipify.com&password=user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "user@recipify.com"
+								},
+								{
+									"key": "password",
+									"value": "user"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register endpoint",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"billg@microsoft.com\",\r\n    \"password\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipes",
+			"item": [
+				{
+					"name": "Create recipe",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Test7\",\r\n    \"description\": \"Test7\",\r\n    \"ingredients\": [\"krompir\", \"kupus\", \"paprika\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/recipes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"recipes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rate recipe",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/recipes/9/rating/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"recipes",
+								"9",
+								"rating",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All recipes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/recipes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"recipes"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "searchText",
+									"value": "eggs",
+									"disabled": true
+								},
+								{
+									"key": "ingredientCount",
+									"value": "MOST",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All owned recipes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/recipes/owned",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"recipes",
+								"owned"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"// change properties if other user created",
+							"const url = \"http://localhost:8080/api/v1/auth/login?email=user@recipify.com&password=user\"",
+							"",
+							"pm.sendRequest({",
+							"    url: url,",
+							"    method: \"GET\",",
+							"}, function (err, response) {",
+							"    if (err) {",
+							"        console.error(err);",
+							"    } else {",
+							"        const responseBody = response.json();",
+							"        const token = responseBody.token;",
+							"",
+							"        pm.environment.set(\"jwt\", token);",
+							"        console.log(\"Token stored:\", token);",
+							"    }",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Ingredients",
+			"item": [
+				{
+					"name": "Most used",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ingredients/mostUsed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ingredients",
+								"mostUsed"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"// change properties if other user created",
+							"const url = \"http://localhost:8080/api/v1/auth/login?email=user@recipify.com&password=user\"",
+							"",
+							"pm.sendRequest({",
+							"    url: url,",
+							"    method: \"GET\",",
+							"}, function (err, response) {",
+							"    if (err) {",
+							"        console.error(err);",
+							"    } else {",
+							"        const responseBody = response.json();",
+							"        const token = responseBody.token;",
+							"",
+							"        pm.environment.set(\"jwt\", token);",
+							"        console.log(\"Token stored:\", token);",
+							"    }",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "External APIs",
+			"item": [
+				{
+					"name": "Hunter email verifier [Change param api_key]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.hunter.io/v2/email-verifier?email=billg@microsoft.com&api_key=your-api-key-here",
+							"protocol": "https",
+							"host": [
+								"api",
+								"hunter",
+								"io"
+							],
+							"path": [
+								"v2",
+								"email-verifier"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "billg@microsoft.com",
+									"description": "Bill Gates email used for testing, its valid in Hunter and have info in Clearbit :)"
+								},
+								{
+									"key": "api_key",
+									"value": "your-api-key-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Clearbit Email lookup [Change auth header]",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "your-api-key-here",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://person.clearbit.com/v2/people/find?email=billg@microsoft.com",
+							"protocol": "https",
+							"host": [
+								"person",
+								"clearbit",
+								"com"
+							],
+							"path": [
+								"v2",
+								"people",
+								"find"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "billg@microsoft.com",
+									"description": "Bill Gates email used for testing, its valid in Hunter and have info in Clearbit :)"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
