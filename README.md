@@ -12,10 +12,6 @@ Recipify API is created using Java and web framework Spring Boot
 - Application and database are dockerized, using [Docker Compose](https://docs.docker.com/compose/)
 
 
-### Link to access
-Recipify API is hosted on Railway and can be access [via this link](https://recipify-production.up.railway.app/). <br>
-
-
 ### Prerequisites to run on local machine
 - Docker / Docker compose
 
@@ -48,7 +44,7 @@ or [Linux](https://docs.docker.com/desktop/install/linux-install/) installations
 
 
 - <b>Test API</b> <br>
-  We can test API with Swagger by accessing [link](https://recipify-production.up.railway.app/) or using any rest client. I've provided [Postman Collection](https://github.com/apelan/recipify/blob/main/Recipify%20Collection.postman_collection.json) in root folder of project.<br> 
+  We can test API with Swagger (when running on local) or using any rest client. I've provided [Postman Collection](https://github.com/apelan/recipify/blob/main/Recipify%20Collection.postman_collection.json) in root folder of project.<br> 
 Postman Collection is configured for local usage, to test against deployed application on Railway you need to change url. <br>
 
 - <b>Use API</b> <br>
