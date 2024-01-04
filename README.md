@@ -11,6 +11,7 @@ Recipify API is created using Java and web framework Spring Boot
 - User information is fetched from [Clearbit](https://clearbit.com/)
 - Application and database are dockerized, using [Docker Compose](https://docs.docker.com/compose/)
 
+<hr/>
 
 ### Prerequisites to run on local machine
 - Docker / Docker compose
